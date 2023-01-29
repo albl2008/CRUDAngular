@@ -70,6 +70,8 @@ export class AddEditProductComponent implements OnInit {
           'Actualizado'
         );
       });
+      this.loading = false;
+      this.router.navigate(['/']);
     } else {
       //agregar
       this._productService.saveProduct(product).subscribe(() => {
@@ -78,8 +80,8 @@ export class AddEditProductComponent implements OnInit {
           'Agregado'
         );
       });
+      this.loading = false;
+      this.router.navigate(['/']);
     }
-    this.loading = false;
-    this.router.navigate(['/']);
   }
 }
