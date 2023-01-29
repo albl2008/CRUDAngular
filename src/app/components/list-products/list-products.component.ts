@@ -1,5 +1,8 @@
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { Product } from 'src/app/interfaces/product';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-list-products',
@@ -7,24 +10,30 @@ import { Product } from 'src/app/interfaces/product';
   styleUrls: ['./list-products.component.css'],
 })
 export class ListProductsComponent implements OnInit {
-  listProducts: Product[] = [
-    {
-      id: 1,
-      name: 'Coca Cola',
-      description: 'Bebida con azucar',
-      price: 110,
-      stock: 52,
-    },
-    {
-      id: 2,
-      name: 'Corona',
-      description: 'Bebida con alcohol',
-      price: 310,
-      stock: 22,
-    },
-  ];
+  listProducts: Product[] = [];
+  loading: boolean = false;
 
-  constructor() {}
+  constructor(
+    private _productService: ProductService,
+    private toastr: ToastrService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getListProducts();
+  }
+
+  getListProducts() {
+    this.loading = true;
+    this._productService.getListProducts().subscribe((data: Product[]) => {
+      this.listProducts = data;
+      this.loading = false;
+    });
+  }
+  deleteProduct(id: number) {
+    this.loading = true;
+    this._productService.deleteProduct(id).subscribe(() => {
+      this.getListProducts();
+      this.toastr.warning('El producto fue eliminado', 'Producto Eliminado');
+    });
+  }
 }
