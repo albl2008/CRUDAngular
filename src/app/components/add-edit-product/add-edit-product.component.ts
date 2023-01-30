@@ -69,9 +69,9 @@ export class AddEditProductComponent implements OnInit {
           `Producto ${product.name} actualizado correctamente`,
           'Actualizado'
         );
+        this.loading = false;
+        this.router.navigate(['/']);
       });
-      this.loading = false;
-      this.router.navigate(['/']);
     } else {
       //agregar
       this._productService.saveProduct(product).subscribe(() => {
@@ -79,9 +79,9 @@ export class AddEditProductComponent implements OnInit {
           `Producto ${product.name} agregado correctamente`,
           'Agregado'
         );
+        this.loading = false;
+        this.router.navigate(['/']);
       });
-      this.loading = false;
-      this.router.navigate(['/']);
     }
   }
 }
